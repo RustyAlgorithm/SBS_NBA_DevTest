@@ -10,14 +10,15 @@ namespace SBS_NBA_DavTest.Context
 {
      public class ApplicationDbContext : DbContext
      {
-        public DbSet<NBATeam> NBATeams { get; set; }
-        public DbSet<Player> Players { get; set; }
-        public DbSet<Game> Games { get; set; }
-
-
-        public List<NBATeam> GetNBATeams()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            return this.NBATeams.FromSqlRaw("EXEC ClaculateNBAData").ToList();
+        }
+
+        public DbSet<NBAData> NBADataStats { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NBAData>().ToTable("NBAData");
         }
 
 

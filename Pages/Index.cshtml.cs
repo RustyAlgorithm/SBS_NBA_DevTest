@@ -10,20 +10,20 @@ namespace SBS_NBA_DavTest.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly ApplicationDbContext _context;
+        public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;            
         }
-
-        //public List<NBATeam> NBATeams { get; set; }
 
         public void OnGet()
         {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                var nbaData = dbContext.NBATeams.FromSqlRaw("EXEC CalculateNBAData").ToList();
-            }
+            //generate a way for me to call the stored procedure
+            //Q:how do i call this variable in the html?
+
+            var nbaData = _context.NBADataStats.FromSqlRaw("EXEC CalculateNBAData").ToList();
+            
 
         }
     }
