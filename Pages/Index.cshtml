@@ -5,6 +5,45 @@
     ViewData["Title"] = "Home page";
 }
 
+
 <h1>NBA Teams</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Team</th>
+            <th>Stadium</th>
+            <th>Played</th>
+            <th>Won</th>
+            <th>Lost</th>
+            <th>Played Home</th>
+            <th>Played Away</th>
+            <th>Biggest Win</th>
+            <th>Biggest Loss</th>
+            <th>Last Game Stadium</th>
+            <th>Last Game Date</th>
+            <th>MVP</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model.nbaData)
+        {
+            <tr>
+                <td>@team.Name</td>
+                <td>@team.Stadium</td>
+                <td>@team.Played</td>
+                <td>@team.Won</td>
+                <td>@team.Lost</td>
+                <td>@team.PlayedHome</td>
+                <td>@team.PlayedAway</td>
+                <td>@team.BiggestWin</td>
+                <td>@team.BiggestLoss</td>
+                <td>@team.LastGameStadium</td>
+                <td>@team.LastGameDate.ToString("yyyy-MM-dd")</td>
+                <td>@team.MVP</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 

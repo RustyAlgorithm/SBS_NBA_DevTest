@@ -10,6 +10,8 @@ namespace SBS_NBA_DavTest.Models
         public string Logo { get; set; }
         public string URL { get; set; }
 
+
+
         // Navigation property for players in this team
         public ICollection<Player> Players { get; set; }
     }

@@ -15,7 +15,11 @@ namespace SBS_NBA_DavTest.Context
         public DbSet<Game> Games { get; set; }
 
 
-       
+        public List<NBATeam> GetNBATeams()
+        {
+            return this.NBATeams.FromSqlRaw("EXEC ClaculateNBAData").ToList();
+        }
 
-     }
+
+    }
 }
