@@ -19,12 +19,9 @@ namespace SBS_NBA_DavTest.Pages
 
         public void OnGet()
         {
-            //generate a way for me to call the stored procedure
-            //Q:how do i call this variable in the html?
-
+            
             var nbaData = _context.NBADataStats.FromSqlRaw("EXEC CalculateNBAData").ToList();
             
-
         }
     }
 }
