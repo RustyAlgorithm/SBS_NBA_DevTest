@@ -1,0 +1,24 @@
+breakdown of tasks
+
+create stored procdure - learn stored procedures
+
+figure out how to use SQL to calculate data table inside of SQL - note sure why this isnt just done on serverside in CS - Stored procedures more useful for bigger data sets 
+takes load off of hosting server
+
+create a table - refresh how to connect data to this. not sure why error exists.
+
+sort logo references - cant test but need something to show SBS
+
+learn how to make a chart - involes JS... learn JS - no time to learn JS
+
+
+conclusion - MOST. INVOLVED. DEV. TEST. - i know this was designed to test me what i have learnt from this is that i should start fresh use this test as a benchmark for my 
+skills
+
+p.s. i know this looks bad. i just wanted to show some of my thoughts and how i would approach this. i know i could do this but i would need to start fresh and i would need to 
+learn a lot of new things. i would need to learn how to use stored procedures and how to use JS to make charts. i would need to learn how to use SQL better. 
+
+i would like to say also that this has allowed me to see a fundimental flaw in myself and that is that i am my own worst enemy. i was discussing this test with my partner and 
+she mentioned that i have taken a huge knock to my confidence and that i over complicate things when i do just need to get out of my head.
+
+thank you for your time. i hope you have a good day. and if i hear from you again i hope i can show you what i can do. better.

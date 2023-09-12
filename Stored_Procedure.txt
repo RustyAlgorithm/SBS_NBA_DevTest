@@ -1,0 +1,89 @@
+not sure if youd see this from my git hub after rereading your brief i noticed this had several nested selects. and it was too late to change it.
+
+USE NBA;
+
+GO
+
+DROP PROCEDURE IF EXISTS CalculateNBAData;
+
+GO
+
+CREATE PROCEDURE CalculateNBAData
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Calculate MaxGameDateTime
+    WITH MaxGameDate AS (
+        SELECT
+            T.TeamID,
+            MAX(G.GameDateTime) AS MaxGameDateTime
+        FROM
+            Teams AS T
+        LEFT JOIN
+            Games AS G ON T.TeamID = G.HomeTeamID
+        GROUP BY
+            T.TeamID
+    )
+
+    SELECT
+        T.Name AS TeamName,
+        T.Stadium,
+        T.Logo, -- Add logic to retrieve the logo file name or path
+        TS.Played,
+        TS.Won,
+        TS.Lost,
+        TS.PlayedHome,
+        TS.PlayedAway,
+        TS.BiggestWin,
+        TS.BiggestLoss,
+        LG.LastGameStadium AS LastGameStadium,
+        LG.MaxGameDateTime AS LastGameDate,
+        P.Name AS MVP
+    FROM
+        Teams AS T
+    JOIN (
+        SELECT
+            T.TeamID,
+            COUNT(*) AS Played,
+            SUM(CASE WHEN G.HomeTeamID = T.TeamID THEN 1 ELSE 0 END) AS PlayedHome,
+            SUM(CASE WHEN G.AwayTeamID = T.TeamID THEN 1 ELSE 0 END) AS PlayedAway,
+            SUM(CASE WHEN G.HomeTeamID = T.TeamID AND G.HomeScore > G.AwayScore THEN 1
+                     WHEN G.AwayTeamID = T.TeamID AND G.AwayScore > G.HomeScore THEN 1 ELSE 0 END) AS Won,
+            SUM(CASE WHEN G.HomeTeamID = T.TeamID AND G.HomeScore < G.AwayScore THEN 1
+                     WHEN G.AwayTeamID = T.TeamID AND G.AwayScore < G.HomeScore THEN 1 ELSE 0 END) AS Lost,
+            MAX(CASE WHEN G.HomeTeamID = T.TeamID AND G.HomeScore > G.AwayScore THEN CONCAT(G.HomeScore, '-', G.AwayScore)
+                     WHEN G.AwayTeamID = T.TeamID AND G.AwayScore > G.HomeScore THEN CONCAT(G.AwayScore, '-', G.HomeScore) ELSE '' END) AS BiggestWin,
+            MAX(CASE WHEN G.HomeTeamID = T.TeamID AND G.HomeScore < G.AwayScore THEN CONCAT(G.HomeScore, '-', G.AwayScore)
+                     WHEN G.AwayTeamID = T.TeamID AND G.AwayScore < G.HomeScore THEN CONCAT(G.AwayScore, '-', G.HomeScore) ELSE '' END) AS BiggestLoss
+        FROM
+            Teams AS T
+        LEFT JOIN
+            Team_Player AS TP ON T.TeamID = TP.TeamID
+        LEFT JOIN
+            Games AS G ON T.TeamID = G.HomeTeamID OR T.TeamID = G.AwayTeamID
+        GROUP BY
+            T.TeamID
+    ) AS TS ON T.TeamID = TS.TeamID
+    LEFT JOIN
+        (
+            SELECT
+                T.TeamID,
+                MaxGameDateTime,
+                MAX(CASE WHEN G.GameDateTime = MG.MaxGameDateTime THEN T.Stadium ELSE '' END) AS LastGameStadium
+            FROM
+                Teams AS T
+            LEFT JOIN
+                Games AS G ON T.TeamID = G.HomeTeamID OR T.TeamID = G.AwayTeamID
+            LEFT JOIN
+                MaxGameDate AS MG ON T.TeamID = MG.TeamID
+            GROUP BY
+                T.TeamID, MaxGameDateTime
+        ) AS LG ON T.TeamID = LG.TeamID
+    LEFT JOIN
+        Team_Player AS TP ON T.TeamID = TP.TeamID
+    LEFT JOIN
+        Players AS P ON TP.PlayerID = P.PlayerID;
+
+    SET NOCOUNT OFF;
+END;
